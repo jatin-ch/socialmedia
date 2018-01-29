@@ -1,0 +1,232 @@
+<% layout('main') -%>
+
+<link rel="stylesheet" href="/css/post.css">
+<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="/js/postLike.js"></script> -->
+  <script>
+  tinymce.init({
+    selector:'textarea',
+    plugins:'link code',
+    menubar:false,
+    branding: false
+  });
+  </script>
+
+<% if(message.length > 0){ %>
+    <div class="alert alert-success alert-dismissible">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <%= message %>
+    </div>
+  <% } %>
+
+<div class="container">
+
+<% if(user) { %>
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="create_post">
+        <div class="post_text">
+          <img src="<%= user.profile.picture %>" class="img-circle img-responsive img-center img-thumbnail" alt="<%= user.profile.name %>">
+          <span class="open" id="myBtn">Share an post, article or photo</span>
+        </div>
+        <hr style="margin:0px">
+        <div class="post_image">
+          <button  class="btn btnsm btnP pull-right">Post</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% } %>
+
+  <div class="row">
+    <% for(var i = 0; i < posts.length; i++){ %>
+      <div class="col-md-6 col-md-offset-3">
+        <div class="post-container thumbnail">
+        <div class="top">
+          <div class="top-left">
+            <img class="img-circle img-thumbnail" src="<%= posts[i].author.profile.picture %>" alt="" style="width:50px">
+          </div>
+          <div class="top-mid">
+            <a href="#"><%= posts[i].author.profile.name %></a><br>
+            <small><%= date.format(posts[i].createdAt, 'DD MMM YYYY, hh:mm A') %></small>
+          </div>
+
+          <% if(JSON.stringify(user) === JSON.stringify(posts[i].author)) { %>
+          <div class="top-right dropdown" style="position:absolute;right:25px;">
+            <i class="fa fa-ellipsis-h dropdown-toggle" data-toggle="dropdown" style="cursor:pointer"></i>
+            <ul class="dropdown-menu pull-left">
+              <li style="cursor:pointer"><a onclick="document.getElementById('<%= posts[i]._id %>').style.display='block'">Edit Post</a></li>
+              <li style="cursor:pointer">
+                <a onclick="
+                   if(confirm('Are you sure, You Want to delete this?')){
+                     event.preventDefault();
+                     document.getElementById('d<%= posts[i]._id %>').submit();
+                   } else {
+                     event.preventDefault();
+                   }"> Delete
+                </a>
+            </li>
+            </ul>
+          </div>
+          <% } %>
+          <br clear="all">
+
+            <!-- <div class="media-right" onclick="document.getElementById('<%= posts[i]._id %>').style.display='block'">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </div> -->
+
+            <form action="/posts/delete/<%= posts[i]._id %>" method="post" id="d<%= posts[i]._id %>">
+            </form>
+
+            <div id="<%= posts[i]._id %>" class="editPostModal">
+              <div class="modal-content animate">
+                <div class="media" style="background-color:#f1f1f1">
+                  <div class="media-left">
+                    <img src="https://www.w3schools.com/howto/img_avatar.png" alt="Avatar" class="avatar img-thumbnail">
+                    <a href="#"><%= posts[i].author.profile.name %></a> |
+                    <small>Last updated: <%= date.format(posts[i].updatedAt, 'DD MMM YYYY, hh:mm A') %></small>
+                  </div>
+                  <div class="media-right">
+                    <span onclick="document.getElementById('<%= posts[i]._id %>').style.display='none'" class="closeContainer" title="Close Modal">&times;</span>
+                  </div>
+                </div>
+               <form action="/posts/<%= posts[i]._id %>" method="post" enctype="multipart/form-data">
+                 <div class="postContainer">
+                   <textarea name="body" style="height:50px"><%- posts[i].body %></textarea>
+                 </div>
+
+                 <div class="postContainer" style="background-color:#f1f1f1">
+                   <input type="file" name="image">
+                   <!-- <input type="file" name="image" id="selectedFile3" style="display:none">
+                   <i class="fa fa-picture-o" onclick="document.getElementById('selectedFile3').click();" style="color:#0077b3;cursor:pointer;" title="Image"></i> -->
+                   <button type="submit" class="btn newBtn-sm pull-right">Save</button>
+                 </div>
+               </form>
+              </div>
+            </div>
+
+        </div>
+
+        <div class="post-body">
+          <p><%- posts[i].body %></p>
+        </div>
+
+        <% if(posts[i].image) { %>
+        <img src="uploads/<%= posts[i].image %>">
+        <% } %>
+
+        <div class="like-count">
+          <p><%= posts[i].likes.length %> Likes . 2 Comments</p>
+        </div>
+
+        <hr style="margin:5px 0">
+
+        <div class="bottom">
+          <form action="/like/<%= posts[i]._id %>" method="post" id="pl<%= posts[i]._id %>"></form>
+
+          <% if(posts[i].likes.length > 0) {
+            for(var j = 0; j < posts[i].likes.length; j++) {
+              if(JSON.stringify(posts[i].likes[j]._id) === JSON.stringify(user._id)) { %>
+
+                <div style="color:#337ab7" id="mool" class="bottom-left" onclick="document.getElementById('pl<%= posts[i]._id %>').submit();">
+                  <i class="fa fa-thumbs-o-up fa-fw"></i> Like
+                </div>
+                <div class="bottom-mid">
+                  <i class="fa fa-comment-o fa-fw"></i> Comment
+                </div>
+                <div class="bottom-right">
+                  <i class="fa fa-share fa-fw"></i> Share
+                </div>
+
+            <% } else { %>
+
+              <div id="mool" class="bottom-left" onclick="document.getElementById('pl<%= posts[i]._id %>').submit();">
+                <i class="fa fa-thumbs-o-up fa-fw"></i> Like
+              </div>
+              <div class="bottom-mid">
+                <i class="fa fa-comment-o fa-fw"></i> Comment
+              </div>
+              <div class="bottom-right">
+                <i class="fa fa-share fa-fw"></i> Share
+              </div>
+
+            <% } } } else { %>
+
+            <div id="mool" class="bottom-left" onclick="document.getElementById('pl<%= posts[i]._id %>').submit();">
+              <i class="fa fa-thumbs-o-up fa-fw"></i> Like
+            </div>
+            <div class="bottom-mid">
+              <i class="fa fa-comment-o fa-fw"></i> Comment
+            </div>
+            <div class="bottom-right">
+              <i class="fa fa-share fa-fw"></i> Share
+            </div>
+
+          <% } %>
+
+          <br clear="all">
+        </div>
+
+      </div>
+      </div>
+  <% } %>
+  </div>
+
+</div>
+
+
+
+<!-- Popup Modals  -->
+<!--  Post Modal -->
+<% if(user) { %>
+<div id="myModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <div class="media">
+      <div class="media-left">
+        <img src="<%= user.profile.picture %>" class="img-circle img-responsive img-center img-thumbnail" alt="<%= user.profile.name %>">
+      </div>
+      <div class="media-body">
+        <p style="font-weight:bold"><%= user.profile.name %></p>
+      </div>
+      <form action="/posts" method="post" enctype="multipart/form-data">
+        <textarea name="body" class="form-control" style="height:50px"></textarea>
+        <div class="form-group m-t-10">
+          <input type="file" name="image">
+          <!-- <input type="file" name="image" id="selectedFile3" style="display:none">
+          <i class="fa fa-picture-o" onclick="document.getElementById('selectedFile3').click();" style="color:silver;cursor:pointer;" ></i> -->
+          <button type="submit" class="btn btnsm btnP pull-right">Post</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<% } %>
+<!-- end of Post Modal -->
+<!-- end of popup modals -->
+
+
+<!-- scripts for Post Modal -->
+<script>
+var modal = document.getElementById('myModal');
+var btn = document.getElementById("myBtn");
+var span = document.getElementsByClassName("close")[0];
+btn.onclick = function() {
+    modal.style.display = "block";
+}
+
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+</script>

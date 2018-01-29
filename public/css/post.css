@@ -1,0 +1,229 @@
+.create_post{
+  height: 100%;
+  height: 120px;
+  margin: 0 0 8px;
+  background: #fff;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  box-shadow: 0 1px 1px rgba(0,0,0,.05);
+  color: #84878a;
+}
+
+.post_text{
+  width: 100%;
+  height: 60px;
+  padding: 10px;
+}
+
+.post_image{
+  width: 100%;
+  height: 60px;
+  padding: 15px;
+}
+
+.create_post img{
+  width: 40px;
+  overflow: hidden;
+}
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    /*padding-top: 100px;*/
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+
+.dot {
+    height: 12px;
+    width: 12px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.post-container {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.top {
+    padding: 10px;
+    /*background: #f1f1f1;*/
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+.top-left{
+  float: left;
+}
+.top-mid{
+  float: left;
+  padding-left: 10px;
+}
+.top-mid a{
+  font-weight: bold;
+}
+.top-right{
+  flaot: left;
+  padding-right: 0;
+}
+
+.post-body {
+    padding: 0 10px;
+}
+
+.bottom{
+  width: 100%;
+  height: auto;
+  font-weight: bold;
+}
+.bottom-left{
+  float: left;
+  padding: 5px 8px;
+  margin-left: 10px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+.bottom-mid{
+  float: left;
+  padding: 5px 8px;
+  margin-left: 10px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+.bottom-right{
+  float: left;
+  padding: 5px 8px;
+  margin-left: 10px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+.bottom-left:hover{
+  background-color: #b3d9ff;
+  color: #006097;
+}
+.bottom-mid:hover{
+  background-color: #b3d9ff;
+  color: #006097;
+}
+.bottom-right:hover{
+  background-color: #b3d9ff;
+  color: #006097;
+}
+
+.like-count{
+  width: 100%;
+  height: auto;
+  padding: 10px 0 0 10px;
+}
+.like-count p{
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: rgba(0,0,0,.6);
+  margin: 10px 0 0 0;
+  font-family: -apple-system,system-ui,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Fira Sans,Ubuntu,Oxygen,Oxygen Sans,Cantarell,Droid Sans,Lucida Grande,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Emoji,Segoe UI Symbol,Hiragino Kaku Gothic Pro,Meiryo,Hiragino Sans GB W3,Noto Naskh Arabic,Droid Arabic Naskh,Geeza Pro,Simplified Arabic,Noto Sans Thai,Thonburi,Dokchampa,Droid Sans Thai,Droid Sans Fallback,'.SFNSDisplay-Regular',Heiti SC,Microsoft Yahei;
+}
+
+
+img.avatar {
+    width: 10%;
+    border-radius: 50%;
+}
+
+.postContainer {
+    padding: 16px;
+}
+
+/* The Modal (background) */
+.editPostModal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    padding-top: 60px;
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+    border: 1px solid #888;
+    width: 50%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button (x) */
+.closeContainer {
+    position: absolute;
+    right: 25px;
+    top: 0;
+    color: #000;
+    font-size: 35px;
+    font-weight: bold;
+}
+
+.closeContainer:hover,
+.closeContainer:focus {
+    color: red;
+    cursor: pointer;
+}
+
+/* Add Zoom Animation */
+.animate {
+    -webkit-animation: animatezoom 0.6s;
+    animation: animatezoom 0.6s
+}
+
+@-webkit-keyframes animatezoom {
+    from {-webkit-transform: scale(0)}
+    to {-webkit-transform: scale(1)}
+}
+
+@keyframes animatezoom {
+    from {transform: scale(0)}
+    to {transform: scale(1)}
+}
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 300px) {
+    span.psw {
+       display: block;
+       float: none;
+    }
+}

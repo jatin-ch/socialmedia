@@ -1,0 +1,44 @@
+body{
+  background-color: #f8f8f8;
+  /*font-family: Source Sans Pro,Helvetica,Arial,sans-serif,Hiragino Kaku Gothic Pro,Meiryo,Hiragino Sans GB W3,Noto Naskh Arabic,Droid Arabic Naskh,Geeza Pro,Simplified Arabic,Noto Sans Thai,Thonburi,Dokchampa,Droid Sans Thai,Droid Sans Fallback,-apple-system,'.SFNSDisplay-Regular',Heiti SC,Microsoft Yahei,Segoe UI;*/
+  font-family: 'Helvetica Neue', sans-serif;
+  /*font-family: "Hanken Sans","Helvetica Neue",Helvetica,sans-serif;*/
+}
+
+p { line-height: 20px; font-weight: 400; color: rgba(0,0,0,.7); font-family: 'Helvetica Neue', sans-serif; font-size: 14px; margin: 0 0 24px; text-align: justify; text-justify: inter-word; }
+
+
+#main{
+  margin: 20px;
+}
+
+.m-t-20{
+  margin-top: 20px;
+}
+.m-t-10{
+  margin-top: 10px;
+}
+
+.btnsm{
+  border: 0;
+  /*border-radius: 0;*/
+  height:30px;
+  font-weight: bold;
+}
+
+.btnmd{
+  border: 0;
+  border-radius: 0;
+  height:40px;
+  font-weight: bold;
+}
+
+.btnP{
+  color: #fff!important;
+  background-color: #2196F3!important;
+}
+
+.btnS{
+  color: #fff!important;
+  background-color: #4CAF50!important;
+}

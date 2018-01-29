@@ -1,0 +1,17 @@
+<% layout('main') -%>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-md-offset-2">
+      <img src="<%= user.profile.picture %>" class="img-circle img-responsive img-center img-thumbnail" alt="<%= user.profile.name %>">
+      <p>Name: <%= user.profile.name %></p>
+      <p>Email: <%= user.email %></p>
+      <% if(user.address === "" || typeof user.address === 'undefined'){ %>
+        <p>Address: <span style="color:#cc3300">No address data!</span></p>
+      <% } else{ %>
+        <p>Address: <%= user.address %></p>
+      <% } %>
+
+      <a href="/edit-profile" class="btn btn-primary btn-sm">Edit Profile</a>
+    </div>
+  </div>
+</div>
