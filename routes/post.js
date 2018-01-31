@@ -3,18 +3,19 @@ var Post = require('../models/post');
 var Purifier = require('html-purify');
 var date = require('date-and-time');
 var multer = require('multer');
+var fs = require('fs');
+var validator = require('youtube-validator');
 var upload = multer({dest: 'public/uploads'});
-var Postlike = require('../models/postlike');
 
 
 
 router.get('/', function(req, res, next){
   Post.find({})
       .populate('author')
+      .populate('comments.commentby')
       .exec(function(err, posts){
         if(err) return next(err);
-        var jat = new Post();
-        res.render('index', { message: req.flash('success'), posts: posts, date: date , jat:jat});
+        res.render('index', { message: req.flash('success'), posts: posts, date: date});
       });
 });
 
@@ -62,40 +63,19 @@ router.post('/posts/:id', upload.any(), function(req, res, next) {
 });
 
 router.post('/posts/delete/:id', function(req, res, next){
-  Post.remove({_id: req.params.id}, function(err){
-    if(err) return next(err);
-    req.flash('success', 'Post was deleted');
-    return res.redirect('/');
-  })
-});
-
-router.post('/like/:id', function(req, res, next){
-  Post.findOne({ _id: req.params.id, 'likes._id': req.user._id }, function(err, post) {
+  Post.findById(req.params.id, function(err, post) {
     if(err) return next(err);
 
-    if(post) {
-      post.likes.pull({ _id: req.user._id});
+    if(post.image){
+      fs.unlink('public/uploads/'+post.image, function(err){
+        if (err) throw err;
+        console.log('file successfully deleted!');
 
-      post.save(function(err){
-            if(err) return next(err);
-            req.flash('success', 'You unliked this post');
-            return  res.redirect('/');
-          });
-
-    } else {
-      Post.findById(req.params.id, function(err, post) {
-        if(err) return next(err);
-
-        post.likes.push({
-          islike: true,
-          _id: req.user
-        });
-
-        post.save(function(err){
-              if(err) return next(err);
-              req.flash('success', 'You liked this post');
-              return  res.redirect('/');
-            });
+        Post.remove({_id: req.params.id}, function(err){
+          if(err) return next(err);
+          req.flash('success', 'Post was deleted');
+          return res.redirect('/');
+        })
       });
     }
 
@@ -111,9 +91,12 @@ router.post('/mool/like', function(req, res, next) {
       post.likes.pull({ _id: req.user._id});
 
       post.save(function(err){
-            if(err) return next(err);
-            res.json(post.likes.length); //return  true;
-          });
+        if(err) return next(err);
+        var result = {};
+        result.cnt = post.likes.length;
+        result.bool = false;
+        res.json(result); ////return  true;
+      });
 
     } else {
       Post.findById(req.body.id, function(err, post) {
@@ -125,14 +108,41 @@ router.post('/mool/like', function(req, res, next) {
         });
 
         post.save(function(err){
-              if(err) return next(err);
-              res.json(post.likes.length); ////return  true;
-            });
+          if(err) return next(err);
+          var result = {};
+          result.cnt = post.likes.length;
+          result.bool = true;
+          res.json(result); ////return  true;
+        });
       });
     }
 
   });
 });
+
+
+router.post('/mool/comment', function(req, res, next) {
+  Post.findById(req.body.id, function(err, post) {
+    if(err) return next(err);
+
+    console.log(post);
+
+    post.comments.push({
+      commentby: req.user,
+      comment: req.body.comment
+    });
+
+    post.save(function(err){
+      if(err) return next(err);
+        var result = {};
+        result.cnt = post.comments.length;
+        result.comment = req.body.comment;
+        res.json(result);
+    });
+
+  });
+});
+
 
 
 module.exports = router;

@@ -106,6 +106,7 @@
   width: 100%;
   height: auto;
   font-weight: bold;
+  padding: 0 10px 8px;
 }
 .bottom-left{
   float: left;
@@ -155,6 +156,27 @@
   font-family: -apple-system,system-ui,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Fira Sans,Ubuntu,Oxygen,Oxygen Sans,Cantarell,Droid Sans,Lucida Grande,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Emoji,Segoe UI Symbol,Hiragino Kaku Gothic Pro,Meiryo,Hiragino Sans GB W3,Noto Naskh Arabic,Droid Arabic Naskh,Geeza Pro,Simplified Arabic,Noto Sans Thai,Thonburi,Dokchampa,Droid Sans Thai,Droid Sans Fallback,'.SFNSDisplay-Regular',Heiti SC,Microsoft Yahei;
 }
 
+
+.post-comment-box {
+  width: 100%;
+  height:auto;
+  background-color: #f3f6f8;
+  padding: 10px;
+  display: none;
+}
+
+.post-comment-box ul {
+  padding: 10px 0;
+}
+
+.post-comment-box ul > li {
+  list-style: none;
+  padding: 8px 0;
+}
+
+.post-reply-box {
+  display: none;
+}
 
 img.avatar {
     width: 10%;

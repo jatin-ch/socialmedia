@@ -9,6 +9,10 @@ var PostSchema = new Schema({
     type: String,
     default:''
   },
+  video: {
+    type: String,
+    default: ''
+  },
   author: {
     type: Schema.Types.ObjectId,
     ref: 'User'
@@ -24,6 +28,30 @@ var PostSchema = new Schema({
       ref: 'User',
       unique: false
     }
+  }],
+  comments: [{
+    _id: false,
+    commentby: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      unique: false
+    },
+    comment: {
+      type: String,
+      default: ''
+    },
+    replies: [{
+      _id: false,
+      replyby: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        unique: false
+      },
+      reply: {
+        type: String,
+        default: ''
+      }
+    }]
   }]
 },
 {
