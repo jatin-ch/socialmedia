@@ -48,7 +48,7 @@
         <div class="post-container thumbnail">
         <div class="top">
           <div class="top-left">
-            <img class="img-circle img-thumbnail" src="<%= posts[i].author.profile.picture %>" alt="" style="width:50px">
+            <img class="img-circle" src="<%= posts[i].author.profile.picture %>" alt="" style="width:40px">
           </div>
           <div class="top-mid">
             <a href="#"><%= posts[i].author.profile.name %></a><br>
@@ -56,18 +56,22 @@
           </div>
 
           <% if(JSON.stringify(user) === JSON.stringify(posts[i].author)) { %>
-          <div class="top-right dropdown" style="position:absolute;right:25px;">
+          <div class="pull-right dropdown edcmnt">
             <i class="fa fa-ellipsis-h dropdown-toggle" data-toggle="dropdown" style="cursor:pointer"></i>
             <ul class="dropdown-menu pull-left">
-              <li style="cursor:pointer"><a onclick="document.getElementById('<%= posts[i]._id %>').style.display='block'">Edit Post</a></li>
-              <li style="cursor:pointer">
+              <li>
+                <a onclick="document.getElementById('<%= posts[i]._id %>').style.display='block'">
+                  <i class="fa fa-edit"></i> Edit
+                </a>
+              </li>
+              <li>
                 <a onclick="
                    if(confirm('Are you sure, You Want to delete this?')){
                      event.preventDefault();
                      document.getElementById('d<%= posts[i]._id %>').submit();
                    } else {
                      event.preventDefault();
-                   }"> Delete
+                   }"> <i class="fa fa-trash"></i> Delete
                 </a>
             </li>
             </ul>
@@ -90,7 +94,7 @@
                     <span onclick="document.getElementById('<%= posts[i]._id %>').style.display='none'" class="closeContainer" title="Close Modal">&times;</span>
                   </div>
                 </div>
-               <form action="/posts/<%= posts[i]._id %>" method="post" enctype="multipart/form-data">
+               <form action="/posts/edit/<%= posts[i]._id %>" method="post" enctype="multipart/form-data">
                  <div class="postContainer">
                    <textarea name="body" style="height:50px"><%- posts[i].body %></textarea>
                  </div>
@@ -149,10 +153,11 @@
 
         <div id="pcb<%= posts[i]._id %>" class="post-comment-box">
           <div class="input-group">
-            <input id="postId" type="hidden" name="postId" value="<%= posts[i]._id %>">
-            <input id="comment" type="text" name="comment" class="form-control" placeholder="Add a comment">
+            <input id="comment<%= posts[i]._id %>" type="text" name="comment" class="form-control" placeholder="Add a comment">
             <div class="input-group-btn">
-              <button id="postComment" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
+              <button id="postComment" class="btn btn-default" value="<%= posts[i]._id %>">
+                <i class="fa fa-arrow-right"></i>
+              </button>
             </div>
           </div>
 
@@ -162,19 +167,90 @@
           <ul id="allcomment<%= posts[i]._id %>">
             <% for(var k = posts[i].comments.length-1; k >= 0; k--) { %>
               <li>
-                <img src="<%= posts[i].comments[k].commentby.profile.picture%>" class="img-circle" style="width:25px;">
-                <a style="font-weight:bold"><%=  posts[i].comments[k].commentby.profile.name %></a> <%= posts[i].comments[k].comment %>
-                <br>
-                <button onclick="$('#prb<%= k %><%= posts[i]._id %>').toggle()" class="btn btn-default btn-xs"><i class="fa fa-reply"></i> Reply</button>
-                <div id="prb<%= k %><%= posts[i]._id %>" class="post-reply-box">
-                  <div class="input-group">
-                    <input id="postId" type="hidden" name="postId" value="<%= posts[i]._id %>">
-                    <input id="reply" type="text" name="reply" class="form-control" placeholder="Add a reply">
-                    <div class="input-group-btn">
-                      <button id="postReply" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
+                <div class="row">
+
+                  <div class="col-md-1" style="display:inline-block">
+                    <img src="<%= posts[i].comments[k].commentby.profile.picture%>" class="img-circle" style="width:25px;">
+                  </div>
+
+                  <div class="col-md-10" style="display:inline-block">
+                    <b><%=  posts[i].comments[k].commentby.profile.name %></b> <%= posts[i].comments[k].comment %>
+                    <br>
+                    <a href="#" onclick="$('#prb<%= k %><%= posts[i]._id %>').toggle()" style="border-bottom: 2px solid #ededed;color:#16af59;text-decoration:none">Reply</a>
+
+                    <div id="prb<%= k %><%= posts[i]._id %>" class="post-reply-box">
+                      <div class="input-group">
+                        <input id="postId" type="hidden" name="postId" value="<%= posts[i]._id %>">
+                        <input id="reply" type="text" name="reply" class="form-control" placeholder="Add a reply">
+                        <div class="input-group-btn">
+                          <button id="postReply" class="btn btn-default"><i class="fa fa-arrow-right"></i></button>
+                        </div>
+                      </div>
                     </div>
                   </div>
+
+                  <% if(JSON.stringify(user) === JSON.stringify(posts[i].comments[k].commentby)) { %>
+                  <div class="pull-right dropdown edcmnt col-md-1">
+                    <i class="fa fa-ellipsis-h dropdown-toggle" data-toggle="dropdown" style="cursor:pointer"></i>
+                    <ul class="dropdown-menu pull-left">
+                      <li>
+                        <a onclick="document.getElementById('<%= posts[i].comments[k]._id %>').style.display='block'"><i class="fa fa-edit"></i> Edit</a>
+                      </li>
+                      <li>
+                        <form action="/comments/delete/<%= posts[i]._id %>" method="post" id="dc<%= posts[i]._id %>">
+                          <input type="hidden" name="commentId" value="<%= posts[i].comments[k]._id %>">
+                        </form>
+                        <a onclick="
+                           if(confirm('Are you sure, You Want to delete this?')){
+                             event.preventDefault();
+                             document.getElementById('dc<%= posts[i]._id %>').submit();
+                           } else {
+                             event.preventDefault();
+                           }"> <i class="fa fa-trash"></i> Delete
+                        </a>
+                    </li>
+                    </ul>
+
+                    <div id="<%= posts[i].comments[k]._id %>" class="editPostModal">
+                      <div class="modal-content1 animate">
+                        <div class="modal-content1-header">
+                          <b>Edit comment</b> <i class="fa fa-times pull-right" onclick="document.getElementById('<%= posts[i].comments[k]._id %>').style.display='none'"></i>
+                        </div>
+                        <form action="/comments/edit/<%= posts[i]._id %>" method="post">
+                        <input type="text" name="comment" value="<%= posts[i].comments[k].comment %>" class="form-control">
+                        <input type="hidden" name="commentId" value="<%= posts[i].comments[k]._id %>">
+                         <div style="padding:5px;text-align:right">
+                          <span class="btn btn-default btn-xs" onclick="document.getElementById('<%= posts[i].comments[k]._id %>').style.display='none'">Cancel</span>
+                          <button type="submit" class="btn btn-primary btn-xs">Save</button>
+                        </div>
+                       </form>
+                      </div>
+                    </div>
+
+                  </div>
+                  <% } else if(JSON.stringify(user) === JSON.stringify(posts[i].author)) { %>
+                    <div class="pull-right dropdown edcmnt col-md-1">
+                      <i class="fa fa-ellipsis-h dropdown-toggle" data-toggle="dropdown" style="cursor:pointer"></i>
+                      <ul class="dropdown-menu pull-left">
+                        <li>
+                          <form action="/comments/delete/<%= posts[i]._id %>" method="post" id="dc<%= posts[i]._id %>">
+                            <input type="hidden" name="commentId" value="<%= posts[i].comments[k]._id %>">
+                          </form>
+                          <a onclick="
+                             if(confirm('Are you sure, You Want to delete this?')){
+                               event.preventDefault();
+                               document.getElementById('dc<%= posts[i]._id %>').submit();
+                             } else {
+                               event.preventDefault();
+                             }"> <i class="fa fa-trash"></i> Delete
+                          </a>
+                      </li>
+                      </ul>
+                    </div>
+                  <% } %>
+
                 </div>
+
               </li>
             <%
              mool++;

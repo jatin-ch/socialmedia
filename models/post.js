@@ -30,7 +30,6 @@ var PostSchema = new Schema({
     }
   }],
   comments: [{
-    _id: false,
     commentby: {
       type: Schema.Types.ObjectId,
       ref: 'User',
@@ -39,19 +38,20 @@ var PostSchema = new Schema({
     comment: {
       type: String,
       default: ''
-    },
-    replies: [{
-      _id: false,
-      replyby: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-        unique: false
-      },
-      reply: {
-        type: String,
-        default: ''
-      }
-    }]
+    }
+    // ,
+    // replies: [{
+    //   _id: false,
+    //   replyby: {
+    //     type: Schema.Types.ObjectId,
+    //     ref: 'User',
+    //     unique: false
+    //   },
+    //   reply: {
+    //     type: String,
+    //     default: ''
+    //   }
+    // }]
   }]
 },
 {

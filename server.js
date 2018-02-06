@@ -48,10 +48,13 @@ app.set('view engine', 'ejs');
 
 var authRoutes = require('./routes/auth');
 var postRoutes = require('./routes/post');
+var chatRoutes = require('./routes/chat');
 
 
 app.use(authRoutes);
 app.use(postRoutes);
+app.use(chatRoutes);
+
 
 app.listen(secret.port, function(err){
   if(err) throw err;

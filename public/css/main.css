@@ -42,3 +42,7 @@ p { line-height: 20px; font-weight: 400; color: rgba(0,0,0,.7); font-family: 'He
   color: #fff!important;
   background-color: #4CAF50!important;
 }
+
+ul li {
+  list-style: none;
+}

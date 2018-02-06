@@ -40,7 +40,7 @@ router.post('/posts', upload.any(), function(req, res, next){
     });
 });
 
-router.post('/posts/:id', upload.any(), function(req, res, next) {
+router.post('/posts/edit/:id', upload.any(), function(req, res, next) {
   Post.findById(req.params.id, function(err, post){
     if(err) return next(err);
     var purifier = new Purifier();
@@ -70,25 +70,25 @@ router.post('/posts/delete/:id', function(req, res, next){
       fs.unlink('public/uploads/'+post.image, function(err){
         if (err) throw err;
         console.log('file successfully deleted!');
-
-        Post.remove({_id: req.params.id}, function(err){
-          if(err) return next(err);
-          req.flash('success', 'Post was deleted');
-          return res.redirect('/');
-        })
       });
     }
+
+    Post.remove({   _id: req.params.id }, function(err){
+      if(err) return next(err);
+      req.flash('success', 'Post was deleted');
+      return res.redirect('/');
+    });
 
   });
 });
 
 
-router.post('/mool/like', function(req, res, next) {
+router.post('/posts/like', function(req, res, next) {
   Post.findOne({ _id: req.body.id, 'likes._id': req.user._id }, function(err, post) {
     if(err) return next(err);
 
     if(post) {
-      post.likes.pull({ _id: req.user._id});
+      post.likes.pull({ _id: req.user._id });
 
       post.save(function(err){
         if(err) return next(err);
@@ -121,11 +121,9 @@ router.post('/mool/like', function(req, res, next) {
 });
 
 
-router.post('/mool/comment', function(req, res, next) {
+router.post('/posts/comment', function(req, res, next) {
   Post.findById(req.body.id, function(err, post) {
     if(err) return next(err);
-
-    console.log(post);
 
     post.comments.push({
       commentby: req.user,
@@ -137,11 +135,50 @@ router.post('/mool/comment', function(req, res, next) {
         var result = {};
         result.cnt = post.comments.length;
         result.comment = req.body.comment;
+        var comment = post.comments[result.cnt-1];
+        result.commentby = comment.commentby.profile.name;
+        result.commentbyimg = comment.commentby.profile.picture;
         res.json(result);
     });
 
   });
 });
+
+
+router.post('/comments/edit/:id', function(req, res, next) {
+  Post.findOne({ _id: req.params.id, 'comments._id': req.body.commentId }, function(err, post){
+    if(err) return next(err);
+
+    for(var i = 0; i < post.comments.length; i++) {
+      if(JSON.stringify(post.comments[i]._id) === JSON.stringify(req.body.commentId)) {
+        post.comments[i].comment = req.body.comment;
+        break;
+      }
+    }
+
+    post.save(function(err){
+      if(err) return next(err);
+      req.flash('success', 'Comment was saved successfully ');
+      return res.redirect('/');
+    });
+  });
+});
+
+router.post('/comments/delete/:id', function(req, res, next){
+  Post.findById(req.params.id, function(err, post) {
+    if(err) return next(err);
+
+    post.comments.pull({ _id: req.body.commentId });
+
+    post.save(function(err){
+      if(err) return next(err);
+      req.flash('success', 'Comment was deleted');
+      return res.redirect('/');
+    });
+
+  });
+});
+
 
 
 

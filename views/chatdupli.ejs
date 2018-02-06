@@ -1,0 +1,68 @@
+<% layout('main') -%>
+
+<link rel="stylesheet" href="/css/chat.css">
+
+<div class="container">
+  <div class="row">
+
+    <div class="col-md-2">
+
+    </div>
+
+    <div class="col-md-6">
+
+    </div>
+
+    <div class="col-md-2">
+
+    </div>
+
+    <div class="col-md-2">
+
+      <div class="chat-users">
+        <ul>
+          <% for(var i = 0; i < users.length; i++) {
+            if(JSON.stringify(users[i]) != JSON.stringify(user)) { %>
+            <li id="<%= users[i]._id %>" onclick="MessageBox(this)"><img class="img-circle" src="<%= users[i].profile.picture %>"> <span><%= users[i].profile.name %></span></li>
+
+            <div class="chat-box">
+              <div class="chat-box-header">
+                <i id="chat-close" class="fa fa-times pull-right"></i>
+              </div>
+              <div class="chat-box-body">
+                <ul class="all-messages"></ul>
+              </div>
+              <div class="chat-box-bottom">
+                <div class="input-group">
+                  <input id="receiver" type="hidden" name="receiver" value="">
+                  <input id="message" class="form-control" type="text" name="message" placeholder="Say something...">
+                  <div class="input-group-btn">
+                    <button id="submitMessage" class="btn btn-default" type="submit">Send</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          <% } } %>
+        </ul>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="/js/chatPush.js"></script>
+<script type="text/javascript">
+    function MessageBox(el) {
+      $('.chat-box').show();
+      var id = $(el).attr('id');
+      $('#receiver').val(id);
+    }
+
+    $("#chat-close").click(function(){
+      $(".chat-box").hide();
+    });
+</script>

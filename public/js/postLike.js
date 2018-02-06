@@ -2,23 +2,23 @@ $(function(){
 
 $(document).on('click', '#likebtn', function(e) {
   // console.log($(this).val());
-  var _id = $(this).val();
+  var id = $(this).val();
   $.ajax({
         type: "POST",
-        url: "/mool/like",
-        data: { id: _id },
+        url: "/posts/like",
+        data: { id: id },
         dataType: 'json',
          success:function(data){
            //console.log(data);
            if(data.bool === true) {
-             $('#likespn'+_id).css("color", "#337ab7");
+             $('#likespn'+id).css("color", "#337ab7");
            } else {
-             $('#likespn'+_id).css("color", "#333");
+             $('#likespn'+id).css("color", "#333");
            }
-          $('#likecnt'+_id).empty();
+          $('#likecnt'+id).empty();
           var html = '';
           html += data.cnt + ' Likes';
-          $('#likecnt'+_id).append(html);
+          $('#likecnt'+id).append(html);
          },
          error: function(err){
            console.log(err);
@@ -29,20 +29,23 @@ $(document).on('click', '#likebtn', function(e) {
 
 
 $(document).on('click', '#postComment', function(e) {
-  var id = $('#postId').val();
-  var comment = $('#comment').val();
+  var id = $(this).val();
+  var comment = $('#comment'+id).val();
 
   if(comment != '') {
     $.ajax({
           type: "POST",
-          url: "/mool/comment",
+          url: "/posts/comment",
           data: { id: id, comment: comment },
           dataType: 'json',
            success:function(data){
-             $('#comment').val('');
+             $('#comment'+id).val('');
 
              var comment = '';
-             comment += '<li>'+ data.comment +'</li>'
+             comment += '<li>';
+             comment +=  '<img src="'+data.commentbyimg+'" class="img-circle" style="width:25px;">';
+             comment +=  '<a style="font-weight:bold">'+ data.commentby +'</a> '+ data.comment;
+             comment += '</li>';
              $('#allcomment'+id).prepend(comment);
 
              $('#commentcnt'+id).empty();

@@ -75,6 +75,7 @@
 .post-container {
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
+    padding: 0;
 }
 
 .top {
@@ -145,7 +146,7 @@
 .like-count{
   width: 100%;
   height: auto;
-  padding: 10px 0 0 10px;
+  padding: 0px 0 0 10px;
 }
 .like-count p{
   font-weight: 400;
@@ -176,6 +177,22 @@
 
 .post-reply-box {
   display: none;
+}
+
+.edcmnt {
+  display: inline-block;
+  position:absolute;
+  right:25px;
+}
+
+.edcmnt ul {
+padding: 0;
+min-width: 50px;
+}
+
+.edcmnt ul > li {
+  cursor: pointer;
+  padding: 0;
 }
 
 img.avatar {
@@ -248,4 +265,35 @@ img.avatar {
        display: block;
        float: none;
     }
+}
+
+.modal-content1 {
+    background-color: #fefefe;
+    margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+    width: 25%; /* Could be more or less, depending on screen size */
+}
+
+.modal-content1 input[type=text] {
+  border: 0;
+  border-bottom: 1px solid #ccc;
+  border-radius: 0;
+  height: 30px;
+  padding:  6px 6px 0px 10px;
+  font-size: 14px;
+  line-height: 1.42857143;
+}
+
+.modal-content1-header {
+  height:30px;
+  padding:5px 10px;
+  background-color:#f8f8f8;
+}
+
+.modal-content1-header .fa {
+  cursor: pointer;
+  color: #ccc;
+}
+.modal-content1-header .fa:hover {
+  cursor: pointer;
+  color: #333;
 }
